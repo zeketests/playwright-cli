@@ -1,5 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","1444","user can transfer funds between accounts","chromium","2026-04-02","passed","2026-04-02","ParaBank – Critical Banking Workflow","parabank.spec.ts","",""
-"","1074","displays error on invalid login credentials","chromium","2026-04-02","passed","2026-04-02","ParaBank – Critical Banking Workflow","parabank.spec.ts","",""
-"","1178","user can log out successfully","chromium","2026-04-02","passed","2026-04-02","ParaBank – Critical Banking Workflow","parabank.spec.ts","",""
-"","1150","user can log in and view accounts overview","chromium","2026-04-02","passed","2026-04-02","ParaBank – Critical Banking Workflow","parabank.spec.ts","",""
