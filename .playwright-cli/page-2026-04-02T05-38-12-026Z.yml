@@ -1,0 +1,220 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - link:
+        - /url: admin.htm
+        - img [ref=e4] [cursor=pointer]
+      - link "ParaBank":
+        - /url: index.htm
+        - img "ParaBank" [ref=e5] [cursor=pointer]
+      - paragraph [ref=e6]: Experience the difference
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9]: Solutions
+        - listitem [ref=e10]:
+          - link "About Us" [ref=e11] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e12]:
+          - link "Services" [ref=e13] [cursor=pointer]:
+            - /url: services.htm
+        - listitem [ref=e14]:
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/products.jsp
+        - listitem [ref=e16]:
+          - link "Locations" [ref=e17] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - listitem [ref=e18]:
+          - link "Admin Page" [ref=e19] [cursor=pointer]:
+            - /url: admin.htm
+      - list [ref=e20]:
+        - listitem [ref=e21]:
+          - link "home" [ref=e22] [cursor=pointer]:
+            - /url: index.htm
+        - listitem [ref=e23]:
+          - link "about" [ref=e24] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e25]:
+          - link "contact" [ref=e26] [cursor=pointer]:
+            - /url: contact.htm
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - heading "Customer Login" [level=2] [ref=e29]
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - paragraph [ref=e32]: Username
+            - textbox [active] [ref=e34]
+            - paragraph [ref=e35]: Password
+            - textbox [ref=e37]
+            - button "Log In" [ref=e39] [cursor=pointer]
+          - paragraph [ref=e40]:
+            - link "Forgot login info?" [ref=e41] [cursor=pointer]:
+              - /url: lookup.htm
+          - paragraph [ref=e42]:
+            - link "Register" [ref=e43] [cursor=pointer]:
+              - /url: register.htm
+      - generic [ref=e44]:
+        - heading "Administration" [level=1] [ref=e45]
+        - paragraph [ref=e46]: Database Initialized
+        - table [ref=e47]:
+          - rowgroup [ref=e48]:
+            - 'row "Database Initialize Clean JMS Service Status: Running Shutdown" [ref=e49]':
+              - cell "Database Initialize Clean" [ref=e50]:
+                - heading "Database" [level=3] [ref=e51]
+                - table [ref=e53]:
+                  - rowgroup [ref=e54]:
+                    - row "Initialize Clean" [ref=e55]:
+                      - cell "Initialize" [ref=e56]:
+                        - button "Initialize" [ref=e57] [cursor=pointer]
+                      - cell "Clean" [ref=e58]:
+                        - button "Clean" [ref=e59] [cursor=pointer]
+              - 'cell "JMS Service Status: Running Shutdown" [ref=e60]':
+                - heading "JMS Service" [level=3] [ref=e61]
+                - table [ref=e63]:
+                  - rowgroup [ref=e64]:
+                    - 'row "Status: Running Shutdown" [ref=e65]':
+                      - cell "Status:" [ref=e66]
+                      - cell "Running" [ref=e67]
+                      - cell "Shutdown" [ref=e68]:
+                        - button "Shutdown" [ref=e69] [cursor=pointer]
+        - generic [ref=e70]:
+          - heading "Data Access Mode" [level=3] [ref=e71]
+          - table [ref=e72]:
+            - rowgroup [ref=e73]:
+              - row "SOAP REST (XML)" [ref=e74]:
+                - cell "SOAP" [ref=e75]:
+                  - radio [checked] [ref=e76]
+                  - text: SOAP
+                - cell "REST (XML)" [ref=e77]:
+                  - radio [ref=e78]
+                  - text: REST (XML)
+              - row "REST (JSON) JDBC*" [ref=e79]:
+                - cell "REST (JSON)" [ref=e80]:
+                  - radio [ref=e81]
+                  - text: REST (JSON)
+                - cell "JDBC*" [ref=e82]:
+                  - radio [ref=e83]
+                  - text: JDBC*
+              - row "* - Default Data Access Mode." [ref=e84]:
+                - cell "* - Default Data Access Mode." [ref=e85]:
+                  - separator [ref=e86]
+                  - text: "* - Default Data Access Mode."
+          - heading "Web Service" [level=3] [ref=e87]
+          - table [ref=e88]:
+            - rowgroup [ref=e89]:
+              - row "ParaBank Service[ WSDL | WADL | OpenAPI ]" [ref=e90]:
+                - cell "ParaBank Service[ WSDL | WADL | OpenAPI ]" [ref=e91]:
+                  - text: ParaBank Service[
+                  - link "WSDL" [ref=e92] [cursor=pointer]:
+                    - /url: services/ParaBank?wsdl
+                  - text: "|"
+                  - link "WADL" [ref=e93] [cursor=pointer]:
+                    - /url: services/bank?_wadl&_type=xml
+                  - text: "|"
+                  - link "OpenAPI" [ref=e94] [cursor=pointer]:
+                    - /url: api-docs/index.html
+                  - text: "]"
+              - 'row "SOAP Endpoint: 2222" [ref=e95]':
+                - cell "SOAP Endpoint:" [ref=e96]
+                - cell "2222" [ref=e97]:
+                  - textbox [ref=e98]: "2222"
+              - 'row "REST Endpoint: 22222" [ref=e99]':
+                - cell "REST Endpoint:" [ref=e100]
+                - cell "22222" [ref=e101]:
+                  - textbox [ref=e102]: "22222"
+              - row "(leave blank to use default endpoint)" [ref=e103]:
+                - cell [ref=e104]
+                - cell "(leave blank to use default endpoint)" [ref=e105]
+              - row [ref=e106]:
+                - cell [ref=e107]:
+                  - separator [ref=e108]
+              - row "LoanProcessor Service [ WSDL ]" [ref=e109]:
+                - cell "LoanProcessor Service [ WSDL ]" [ref=e110]:
+                  - text: LoanProcessor Service [
+                  - link "WSDL" [ref=e111] [cursor=pointer]:
+                    - /url: services/LoanProcessor?wsdl
+                  - text: "]"
+              - 'row "Endpoint: 22222" [ref=e112]':
+                - cell "Endpoint:" [ref=e113]
+                - cell "22222" [ref=e114]:
+                  - textbox [ref=e115]: "22222"
+              - row "(leave blank to use default endpoint)" [ref=e116]:
+                - cell [ref=e117]
+                - cell "(leave blank to use default endpoint)" [ref=e118]
+          - heading "Application Settings" [level=3] [ref=e119]
+          - table [ref=e120]:
+            - rowgroup [ref=e121]:
+              - 'row "Init. Balance: $ 515.50" [ref=e122]':
+                - 'cell "Init. Balance: $" [ref=e123]'
+                - cell "515.50" [ref=e124]:
+                  - textbox [ref=e125]: "515.50"
+                - cell [ref=e126]
+              - 'row "Min. Balance: $ 100.00" [ref=e127]':
+                - 'cell "Min. Balance: $" [ref=e128]'
+                - cell "100.00" [ref=e129]:
+                  - textbox [ref=e130]: "100.00"
+                - cell [ref=e131]
+              - row [ref=e132]:
+                - cell [ref=e133]:
+                  - separator [ref=e134]
+              - 'row "Loan Provider: Web Service" [ref=e135]':
+                - cell "Loan Provider:" [ref=e136]
+                - cell "Web Service" [ref=e137]:
+                  - combobox [ref=e138]:
+                    - option "JMS"
+                    - option "Web Service" [selected]
+                    - option "Local"
+                - cell [ref=e139]
+              - 'row "Loan Processor: Available Funds" [ref=e140]':
+                - cell "Loan Processor:" [ref=e141]
+                - cell "Available Funds" [ref=e142]:
+                  - combobox [ref=e143]:
+                    - option "Available Funds" [selected]
+                    - option "Down Payment"
+                    - option "Combined"
+                - cell [ref=e144]
+              - 'row "Threshold: 20 %" [ref=e145]':
+                - cell "Threshold:" [ref=e146]
+                - cell "20 %" [ref=e147]:
+                  - textbox [ref=e148]: "20"
+                  - text: "%"
+                - cell [ref=e149]
+          - button "Submit" [ref=e150] [cursor=pointer]
+  - generic [ref=e152]:
+    - list [ref=e153]:
+      - listitem [ref=e154]:
+        - link "Home" [ref=e155] [cursor=pointer]:
+          - /url: index.htm
+        - text: "|"
+      - listitem [ref=e156]:
+        - link "About Us" [ref=e157] [cursor=pointer]:
+          - /url: about.htm
+        - text: "|"
+      - listitem [ref=e158]:
+        - link "Services" [ref=e159] [cursor=pointer]:
+          - /url: services.htm
+        - text: "|"
+      - listitem [ref=e160]:
+        - link "Products" [ref=e161] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/products.jsp
+        - text: "|"
+      - listitem [ref=e162]:
+        - link "Locations" [ref=e163] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - text: "|"
+      - listitem [ref=e164]:
+        - link "Forum" [ref=e165] [cursor=pointer]:
+          - /url: http://forums.parasoft.com/
+        - text: "|"
+      - listitem [ref=e166]:
+        - link "Site Map" [ref=e167] [cursor=pointer]:
+          - /url: sitemap.htm
+        - text: "|"
+      - listitem [ref=e168]:
+        - link "Contact Us" [ref=e169] [cursor=pointer]:
+          - /url: contact.htm
+    - paragraph [ref=e170]: © Parasoft. All rights reserved.
+    - list [ref=e171]:
+      - listitem [ref=e172]: "Visit us at:"
+      - listitem [ref=e173]:
+        - link "www.parasoft.com" [ref=e174] [cursor=pointer]:
+          - /url: http://www.parasoft.com/
