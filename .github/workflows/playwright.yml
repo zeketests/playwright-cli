@@ -34,20 +34,15 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test tests/parabank.spec.ts --project=chromium
 
-      - name: Get Allure history from gh-pages
-        uses: actions/checkout@v4
+      - name: Copy Allure history from previous run
         if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Copy Allure history into results
-        if: always()
-        continue-on-error: true
         run: |
-          mkdir -p allure-results/history
-          cp -r gh-pages/history/. allure-results/history/ 2>/dev/null || true
+          git fetch origin gh-pages:gh-pages --depth=1 2>/dev/null || true
+          if git show-ref --quiet refs/heads/gh-pages; then
+            mkdir -p allure-results/history
+            git show gh-pages:history 2>/dev/null | tar x -C allure-results/history 2>/dev/null || \
+            git checkout gh-pages -- history 2>/dev/null && cp -r history/. allure-results/history/ 2>/dev/null || true
+          fi
 
       - name: Generate Allure report
         if: always()
