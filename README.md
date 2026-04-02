@@ -116,15 +116,26 @@ npm install
 playwright-cli/
 ├── .github/
 │   └── workflows/
-│       └── playwright.yml       # GitHub Actions CI workflow
-├── pages/                       # Page Object Model classes
+│       └── playwright.yml          # GitHub Actions CI workflow
+├── pages/                          # Page Object Model classes
 │   ├── LoginPage.ts
 │   ├── AccountsOverviewPage.ts
-│   └── TransferFundsPage.ts
+│   ├── TransferFundsPage.ts
+│   ├── OpenNewAccountPage.ts
+│   ├── BillPayPage.ts
+│   ├── RequestLoanPage.ts
+│   ├── FindTransactionsPage.ts
+│   └── AccountActivityPage.ts
 ├── tests/
-│   ├── global-setup.ts          # Auto-initializes ParaBank DB before tests
-│   └── parabank.spec.ts         # ParaBank critical workflow tests
-├── playwright.config.ts         # Playwright configuration
+│   ├── global-setup.ts             # Auto-initializes ParaBank DB before tests
+│   ├── auth.spec.ts                # Login, invalid login, logout
+│   ├── transfer-funds.spec.ts      # Fund transfers between accounts
+│   ├── open-account.spec.ts        # Open checking / savings accounts
+│   ├── bill-pay.spec.ts            # Bill payment
+│   ├── request-loan.spec.ts        # Loan application
+│   ├── find-transactions.spec.ts   # Search transactions by amount
+│   └── account-activity.spec.ts    # View account activity
+├── playwright.config.ts            # Playwright configuration
 ├── package.json
 └── README.md
 ```
@@ -133,9 +144,14 @@ playwright-cli/
 
 | File | Responsibility |
 |---|---|
-| `LoginPage.ts` | Login form interactions, error assertion |
-| `AccountsOverviewPage.ts` | Account table, navigation links, logout |
+| `LoginPage.ts` | Login form, `login()`, `expectLoginError()` |
+| `AccountsOverviewPage.ts` | Account table, nav links, `logout()`, `goTo*()` helpers |
 | `TransferFundsPage.ts` | Transfer form, AJAX dropdown handling, success assertion |
+| `OpenNewAccountPage.ts` | Account type select, open form, new account number assertion |
+| `BillPayPage.ts` | Full payee form, `payBill()`, `expectPaymentComplete()` |
+| `RequestLoanPage.ts` | Loan amount/down payment inputs, `applyForLoan()`, decision assertion |
+| `FindTransactionsPage.ts` | Account + amount search, results table assertion |
+| `AccountActivityPage.ts` | Account details heading, activity table assertion |
 
 ### Global Setup
 
@@ -380,38 +396,51 @@ playwright-cli network           # check for failed API calls
 
 > ParaBank runs on a shared public server. The database is automatically reset to a known state by `global-setup.ts` before every test run, so credentials are always valid.
 
-### Critical workflow covered by this suite
+### Workflows covered by this suite
 
-1. **Login** — authenticate with valid credentials
-2. **Accounts Overview** — verify accounts table is visible and populated
-3. **Fund Transfer** — transfer between two accounts, assert success message
-4. **Invalid login** — assert correct error message for bad credentials
-5. **Logout** — assert redirect back to the login page
+| Spec file | Tests |
+|---|---|
+| `auth.spec.ts` | Login, invalid credentials error, logout |
+| `transfer-funds.spec.ts` | Transfer between accounts, assert success message |
+| `open-account.spec.ts` | Open a new checking account, open a new savings account |
+| `bill-pay.spec.ts` | Pay a bill, assert payment confirmation |
+| `request-loan.spec.ts` | Submit loan application, assert decision returned |
+| `find-transactions.spec.ts` | Transfer funds then find by amount |
+| `account-activity.spec.ts` | Transfer funds then verify activity table |
 
 ---
 
 ## Running the Tests
 
 ```bash
-# Run the ParaBank suite on Chromium (recommended)
+# Run all tests (3 browsers × 10 tests = 30)
 npm test
 
-# Run all tests across all browsers
+# Run all tests across all browsers explicitly
 npm run test:all
 
-# Run against a specific browser
-npx playwright test tests/parabank.spec.ts --project=chromium
-npx playwright test tests/parabank.spec.ts --project=firefox
-npx playwright test tests/parabank.spec.ts --project=webkit
+# Run a single feature file
+npx playwright test tests/auth.spec.ts
+npx playwright test tests/transfer-funds.spec.ts
+npx playwright test tests/open-account.spec.ts
+npx playwright test tests/bill-pay.spec.ts
+npx playwright test tests/request-loan.spec.ts
+npx playwright test tests/find-transactions.spec.ts
+npx playwright test tests/account-activity.spec.ts
 
-# Run in headed mode (visible browser window)
-npx playwright test tests/parabank.spec.ts --headed
+# Run against a specific browser only
+npx playwright test --project=chromium
+npx playwright test --project=firefox
+npx playwright test --project=webkit
+
+# Run in headed mode (visible browser)
+npx playwright test --headed
 
 # Run a single test by name
 npx playwright test -g "user can transfer funds between accounts"
 
 # Debug mode (step through each action)
-npx playwright test tests/parabank.spec.ts --debug
+npx playwright test --debug
 ```
 
 ---

@@ -38,4 +38,27 @@ export class AccountsOverviewPage {
   async goToTransferFunds() {
     await this.transferFundsLink.click();
   }
+
+  async goToOpenNewAccount() {
+    await this.openNewAccountLink.click();
+  }
+
+  async goToBillPay() {
+    await this.billPayLink.click();
+  }
+
+  async goToFindTransactions() {
+    await this.findTransactionsLink.click();
+  }
+
+  async goToRequestLoan() {
+    await this.requestLoanLink.click();
+  }
+
+  async clickFirstAccount(): Promise<string> {
+    const firstAccountLink = this.accountRows.first().getByRole('link').first();
+    const accountNumber = (await firstAccountLink.textContent())?.trim() ?? '';
+    await firstAccountLink.click();
+    return accountNumber;
+  }
 }
