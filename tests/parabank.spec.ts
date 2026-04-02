@@ -1,96 +1,66 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { AccountsOverviewPage } from '../pages/AccountsOverviewPage';
+import { TransferFundsPage } from '../pages/TransferFundsPage';
 
-const BASE_URL = 'https://parabank.parasoft.com/parabank';
 const USERNAME = 'john';
 const PASSWORD = 'demo';
+const FULL_NAME = 'John Smith';
 
 test.describe('ParaBank – Critical Banking Workflow', () => {
   test('user can log in and view accounts overview', async ({ page }) => {
-    await page.goto(`${BASE_URL}/index.htm`);
+    const loginPage = new LoginPage(page);
+    const overviewPage = new AccountsOverviewPage(page);
 
-    await expect(page).toHaveTitle('ParaBank | Welcome | Online Banking');
-    await expect(page.getByRole('heading', { name: 'Customer Login' })).toBeVisible();
-
-    await page.locator('input[name="username"]').fill(USERNAME);
-    await page.locator('input[name="password"]').fill(PASSWORD);
-    await page.getByRole('button', { name: 'Log In' }).click();
-
-    await expect(page).toHaveURL(`${BASE_URL}/overview.htm`);
-    await expect(page).toHaveTitle('ParaBank | Accounts Overview');
-    await expect(page.getByText('Welcome John Smith')).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Accounts Overview' })).toBeVisible();
-
-    // At least one account row should be present in the table
-    const accountRows = page.locator('table tbody tr');
-    await expect(accountRows).not.toHaveCount(0);
+    await loginPage.goto();
+    await loginPage.login(USERNAME, PASSWORD);
+    await overviewPage.expectLoaded(FULL_NAME);
   });
 
   test('user can transfer funds between accounts', async ({ page }) => {
-    // Log in
-    await page.goto(`${BASE_URL}/index.htm`);
-    await page.locator('input[name="username"]').fill(USERNAME);
-    await page.locator('input[name="password"]').fill(PASSWORD);
-    await page.getByRole('button', { name: 'Log In' }).click();
-    await expect(page).toHaveURL(`${BASE_URL}/overview.htm`);
+    const loginPage = new LoginPage(page);
+    const overviewPage = new AccountsOverviewPage(page);
+    const transferPage = new TransferFundsPage(page);
 
-    // Navigate to Transfer Funds
-    await page.getByRole('link', { name: 'Transfer Funds' }).click();
-    await expect(page).toHaveURL(`${BASE_URL}/transfer.htm`);
-    await expect(page.getByRole('heading', { name: 'Transfer Funds' })).toBeVisible();
+    await loginPage.goto();
+    await loginPage.login(USERNAME, PASSWORD);
+    await overviewPage.expectLoaded(FULL_NAME);
 
-    // Get the available source and destination accounts from the dropdowns
-    // The accounts are populated dynamically via AJAX — wait for them to appear
-    const fromSelect = page.locator('#fromAccountId');
-    const toSelect = page.locator('#toAccountId');
+    await overviewPage.goToTransferFunds();
+    await transferPage.expectLoaded();
+    await transferPage.waitForAccounts();
 
-    await expect(fromSelect.locator('option').first()).toBeAttached();
-    await expect(toSelect.locator('option').nth(1)).toBeAttached();
-
-    const fromOptions = await fromSelect.locator('option').allTextContents();
-    const toOptions = await toSelect.locator('option').allTextContents();
+    const fromOptions = await transferPage.getFromAccountOptions();
+    const toOptions = await transferPage.getToAccountOptions();
 
     expect(fromOptions.length).toBeGreaterThanOrEqual(2);
     expect(toOptions.length).toBeGreaterThanOrEqual(2);
 
-    const fromAccount = fromOptions[0].trim();
-    const toAccount = toOptions[1].trim(); // transfer to a different account
+    const fromAccount = fromOptions[0];
+    const toAccount = toOptions[1];
 
-    // Fill in the transfer form
-    await page.locator('#amount').fill('50');
-    await fromSelect.selectOption(fromAccount);
-    await toSelect.selectOption(toAccount);
-
-    await page.getByRole('button', { name: 'Transfer' }).click();
-
-    // Verify transfer success
-    await expect(page.getByRole('heading', { name: 'Transfer Complete!' })).toBeVisible();
-    await expect(
-      page.getByText(`$50.00 has been transferred from account #${fromAccount} to account #${toAccount}.`)
-    ).toBeVisible();
+    await transferPage.transfer('50', fromAccount, toAccount);
+    await transferPage.expectTransferSuccess('50.00', fromAccount, toAccount);
   });
 
   test('displays error on invalid login credentials', async ({ page }) => {
-    await page.goto(`${BASE_URL}/index.htm`);
+    const loginPage = new LoginPage(page);
 
-    await page.locator('input[name="username"]').fill('invaliduser');
-    await page.locator('input[name="password"]').fill('wrongpassword');
-    await page.getByRole('button', { name: 'Log In' }).click();
-
-    await expect(page.getByText('The username and password could not be verified.')).toBeVisible();
+    await loginPage.goto();
+    await loginPage.login('invaliduser', 'wrongpassword');
+    await loginPage.expectLoginError();
   });
 
   test('user can log out successfully', async ({ page }) => {
-    // Log in
-    await page.goto(`${BASE_URL}/index.htm`);
-    await page.locator('input[name="username"]').fill(USERNAME);
-    await page.locator('input[name="password"]').fill(PASSWORD);
-    await page.getByRole('button', { name: 'Log In' }).click();
-    await expect(page).toHaveURL(`${BASE_URL}/overview.htm`);
+    const loginPage = new LoginPage(page);
+    const overviewPage = new AccountsOverviewPage(page);
 
-    // Log out
-    await page.getByRole('link', { name: 'Log Out' }).click();
+    await loginPage.goto();
+    await loginPage.login(USERNAME, PASSWORD);
+    await overviewPage.expectLoaded(FULL_NAME);
 
-    // Should return to the login/home page (URL may include query params like ?ConnType=JDBC)
+    await overviewPage.logout();
+
     await expect(page).toHaveURL(/\/parabank\/index\.htm/);
     await expect(page.getByRole('heading', { name: 'Customer Login' })).toBeVisible();
   });

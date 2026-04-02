@@ -9,3 +9,7 @@ node_modules/
 
 # playwright-cli snapshots and logs (auto-generated, not part of the test suite)
 .playwright-cli/
+
+# Allure
+allure-results/
+allure-report/
