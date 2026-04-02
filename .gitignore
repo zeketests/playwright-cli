@@ -6,3 +6,6 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# playwright-cli snapshots and logs (auto-generated, not part of the test suite)
+.playwright-cli/
