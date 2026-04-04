@@ -6,6 +6,9 @@ export class FindTransactionsPage {
   readonly accountSelect: Locator;
   readonly amountInput: Locator;
   readonly findByAmountButton: Locator;
+  readonly fromDateInput: Locator;
+  readonly toDateInput: Locator;
+  readonly findByDateRangeButton: Locator;
   readonly resultsTable: Locator;
   readonly transactionRows: Locator;
 
@@ -15,6 +18,9 @@ export class FindTransactionsPage {
     this.accountSelect = page.locator('#accountId');
     this.amountInput = page.locator('#amount');
     this.findByAmountButton = page.locator('#findByAmount');
+    this.fromDateInput = page.locator('#fromDate');
+    this.toDateInput = page.locator('#toDate');
+    this.findByDateRangeButton = page.locator('#findByDateRange');
     this.resultsTable = page.getByRole('table').filter({
       has: page.getByRole('columnheader', { name: 'Transaction' }),
     });
@@ -34,6 +40,13 @@ export class FindTransactionsPage {
     await this.accountSelect.selectOption(accountNumber);
     await this.amountInput.fill(amount);
     await this.findByAmountButton.click();
+  }
+
+  async findByDateRange(accountNumber: string, fromDate: string, toDate: string) {
+    await this.accountSelect.selectOption(accountNumber);
+    await this.fromDateInput.fill(fromDate);
+    await this.toDateInput.fill(toDate);
+    await this.findByDateRangeButton.click();
   }
 
   async expectResultsVisible() {
