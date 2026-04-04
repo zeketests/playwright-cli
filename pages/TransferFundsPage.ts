@@ -8,6 +8,8 @@ export class TransferFundsPage {
   readonly toAccountSelect: Locator;
   readonly transferButton: Locator;
   readonly successHeading: Locator;
+  readonly errorHeading: Locator;
+  readonly activityMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,6 +19,8 @@ export class TransferFundsPage {
     this.toAccountSelect = page.locator('#toAccountId');
     this.transferButton = page.getByRole('button', { name: 'Transfer' });
     this.successHeading = page.getByRole('heading', { name: 'Transfer Complete!' });
+    this.errorHeading = page.getByRole('heading', { name: 'Error!' });
+    this.activityMessage = page.getByText('See Account Activity for more details.');
   }
 
   async expectLoaded() {
@@ -50,5 +54,13 @@ export class TransferFundsPage {
     await expect(
       this.page.getByText(`$${amount} has been transferred from account #${fromAccount} to account #${toAccount}.`)
     ).toBeVisible();
+  }
+
+  async expectErrorDisplayed() {
+    await expect(this.errorHeading).toBeVisible();
+  }
+
+  async expectActivityMessageVisible() {
+    await expect(this.activityMessage).toBeVisible();
   }
 }
