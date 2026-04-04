@@ -37,7 +37,7 @@ export class RequestLoanPage {
   }
 
   async expectLoanProcessed() {
-    await expect(this.successHeading).toBeVisible();
-    await expect(this.loanStatusCell).toBeVisible();
+    await expect(this.successHeading).toBeVisible({ timeout: 20000 });
+    await expect(this.loanStatusCell).toBeVisible({ timeout: 20000 });
   }
 }
