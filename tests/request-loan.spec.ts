@@ -20,7 +20,10 @@ test.describe('Request Loan', () => {
     await overviewPage.goToRequestLoan();
     await loanPage.expectLoaded();
     await loanPage.waitForAccounts();
-    await loanPage.applyForLoan('1000', '100');
+    const fromOptions = await loanPage.getFromAccountOptions();
+    // Use the last account — other tests drain fromOptions[0] (account 12345) as their from-account
+    const fromAccount = fromOptions[fromOptions.length - 1];
+    await loanPage.applyForLoan('1000', '100', fromAccount);
     await loanPage.expectLoanProcessed();
   });
 });

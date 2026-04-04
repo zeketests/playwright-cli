@@ -30,9 +30,16 @@ export class RequestLoanPage {
     await expect(this.fromAccountSelect.locator('option').first()).toBeAttached();
   }
 
-  async applyForLoan(amount: string, downPayment: string) {
+  async getFromAccountOptions(): Promise<string[]> {
+    return (await this.fromAccountSelect.locator('option').allTextContents()).map(o => o.trim());
+  }
+
+  async applyForLoan(amount: string, downPayment: string, fromAccount?: string) {
     await this.loanAmountInput.fill(amount);
     await this.downPaymentInput.fill(downPayment);
+    if (fromAccount) {
+      await this.fromAccountSelect.selectOption(fromAccount);
+    }
     await this.applyButton.click();
   }
 
