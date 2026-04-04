@@ -14,14 +14,17 @@ export default async function globalSetup() {
   await page.goto(`${BASE_URL}/admin.htm`);
 
   // Ensure Data Access Mode is set to JDBC so login works correctly
-  await page.evaluate(() => {
-    const jdbcRadio = document.querySelector<HTMLInputElement>('input[value="jdbc"]');
-    if (jdbcRadio && !jdbcRadio.checked) jdbcRadio.click();
-  });
-  await page.evaluate(() => {
-    const form = document.querySelector<HTMLFormElement>('input[name="accessMode"]')?.closest('form');
-    if (form) form.submit();
-  });
+  const jdbcRadio = page.locator('input[value="jdbc"]');
+  if (!(await jdbcRadio.isChecked())) {
+    await jdbcRadio.check();
+  }
+
+  // Set Loan Provider to "Local" so loan requests use the in-process processor
+  // rather than the external SOAP endpoint (which may be misconfigured or unavailable)
+  await page.locator('select[name="loanProvider"]').selectOption('local');
+
+  // Submit the admin settings form
+  await page.getByRole('button', { name: 'Submit' }).click();
   await page.waitForURL(/\/admin\.htm/, { timeout: 10000 });
 
   // Initialize the database to restore the default demo user (john/demo)
