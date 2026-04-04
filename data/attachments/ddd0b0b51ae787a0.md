@@ -16,11 +16,11 @@ Error: expect(locator).toBeVisible() failed
 
 Locator: getByRole('heading', { name: 'Loan Request Processed' })
 Expected: visible
-Timeout: 5000ms
+Timeout: 20000ms
 Error: element(s) not found
 
 Call log:
-  - Expect "toBeVisible" with timeout 5000ms
+  - Expect "toBeVisible" with timeout 20000ms
   - waiting for getByRole('heading', { name: 'Loan Request Processed' })
 
 ```
@@ -181,9 +181,9 @@ Call log:
   37 |   }
   38 | 
   39 |   async expectLoanProcessed() {
-> 40 |     await expect(this.successHeading).toBeVisible();
+> 40 |     await expect(this.successHeading).toBeVisible({ timeout: 20000 });
      |                                       ^ Error: expect(locator).toBeVisible() failed
-  41 |     await expect(this.loanStatusCell).toBeVisible();
+  41 |     await expect(this.loanStatusCell).toBeVisible({ timeout: 20000 });
   42 |   }
   43 | }
   44 | 
